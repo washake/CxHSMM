@@ -21,13 +21,12 @@ T = 100;   % length of each sequence
 
 NULL = -1; % used in the null trick
 
-for (n=1:N)
+for n=1:N
 	mobsq{n} = zeros(K+1,T);
 	for k=1:K
 		clear uniDist;
 		uniDist = (1/(V(k)+1))*ones(1,V(k)+1);
-		for (t=1:T)
-            
+		for t=1:T            
             % construct random sequence for feature k
             tmp = sample_discrete(uniDist);
             if (tmp <= V(k))
