@@ -3,6 +3,17 @@
 %
 % There are N iid obsq contained in variable mobsq. It basically iterate through each obsq
 % and add up the ESS for each parameters.
+%    PI: the initial probability of states 
+%    A: a zero-diag-entry transition probability of states (A_ii = 0)
+%    P: the intial probability of entering a Coxian phase 
+%        P(m,i) : prob. of entering phase m given state i  
+%    D: the terminating probability of phases. 
+%        D(m,i): prob. of phase m 'go to ends' given current state i
+%    B: is a cell array of size K
+%        B{k} is an Vk x Q  observation matrix
+%        B{k}(v,i) = Pr(y_t^k = v | x_t = i)
+%    V: a column 1 x K vector, where V(k) is the number of alphabets for
+%        kth observation elements
 function [essPI,essA,essP,essD,essE,essB,loglik] = compute_ess_cxhsmm(PI,A,P,D,B,V,mobsq)
 
 % Last updated: 

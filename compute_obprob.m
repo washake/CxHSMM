@@ -1,4 +1,4 @@
-function [H lnHScale] = compute_obprob(B,obsq,scaleStr);
+function [H lnHScale] = compute_obprob(B,obsq,scaleStr)
 
 
 % function [H lnHScale] = compute_obprob(B,obsq,scaleStr);

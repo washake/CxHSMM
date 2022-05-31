@@ -29,7 +29,7 @@ if (nargin ~= 5)
     exit;
 end
 
-initmethod = initStr;  % CURRENTLY USE 'random'
+initmethod = initStr;  % CURRENTLY USE 'uniform'
 
 % initialization for PI 
 if (strcmp(initmethod,'uniform'))
@@ -51,10 +51,10 @@ end
 
 % ensure that the diagonal entries are zero, since this is
 % a semi-Markov chain.
-for i = 1:1:Q,
+for i = 1:1:Q
 	A(i,i) = 0;
-end;
-A = mk_stochastic(A);
+end
+A = mk_stochastic(A); % MK_STOCHASTIC Ensure the argument is a stochastic matrix, i.e., the sum over the last dimension is 1.
 
 
 % entering phase initial probability 
@@ -63,7 +63,7 @@ if (strcmp(initmethod,'uniform'))
 elseif (strcmp(initmethod,'random'))
 	P = rand(M,Q);
 end
-P = normalize(P,1);
+P = normalize(P,1); %NORMALISE Make the entries of a (multidimensional) array sum to 1
 
 % ending phase probability, note that we don't need to normalize!
 if (strcmp(initmethod,'uniform'))

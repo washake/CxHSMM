@@ -12,6 +12,18 @@
 % slower due to multiple calls to the same function. Always use the largest
 % possible value for maxXiLength that your computer memory can allow for.
 %
+%    PI: the initial probability of states 
+%    A: a zero-diag-entry transition probability of states (A_ii = 0)
+%    P: the intial probability of entering a Coxian phase 
+%        P(m,i) : prob. of entering phase m given state i  
+%    D: the terminating probability of phases. 
+%        D(m,i): prob. of phase m 'go to ends' given current state i
+%    B: is a cell array of size K
+%        B{k} is an Vk x Q  observation matrix
+%        B{k}(v,i) = Pr(y_t^k = v | x_t = i)
+%    V: a column 1 x K vector, where V(k) is the number of alphabets for
+%        kth observation elements
+
 function[essPI,essA,essP,essD,essE,essB,loglik] = ess_cxhsmm(PI,A,P,D,B,V,obsq,maxXiLength)
 
 % Last updated:  Hung Bui 05/10/2005
@@ -50,6 +62,7 @@ FALSE = 2;
 % forward pass 
 [alpha,phi] = forward_cxhsmm(PI,A,P,D,H);
 
+fprintf('The forwarding probability is %4.2f\n', alpha);
 % backward pass
 [beta] = backward_cxhsmm(PI,A,P,D,H,phi);
 
@@ -68,7 +81,8 @@ gamma = alpha .* beta;
 %
 % expected sufficient statistics for PI
 %
-clear tmp; tmp = gamma(:,:,:,1);
+clear tmp; 
+tmp = gamma(:,:,:,1);
 essPI = sum(sum(tmp,3),2);
 
 %
@@ -106,8 +120,8 @@ end
 % of no of time slice is 1?
 stateMarg = squeeze(sum(sum(gamma,2),3));
 
-for i=1:Q,
-    for (k=1:K)
+for i=1:Q
+    for k=1:K
         for v=1:V(k)
             %clear tmpB;
             
@@ -218,8 +232,8 @@ for tmpIndex = 1:maxXiLength:T
     % essD; essE
     %-----------------------------------------------------------
 
-    for i = 1:1:Q,
-        for n = 1:M-1,
+    for i = 1:1:Q
+        for n = 1:M-1
             % xi(i,nx_i,n,nx_n,k,t)
             clear tmp;
 
@@ -233,9 +247,9 @@ for tmpIndex = 1:maxXiLength:T
 %             %tmp = xi(i,i,n,n,FALSE,:);
 %             tmp = gamma(i,n,FALSE,1:T-1);
 %             essE(n,i) = essE(n,i)+sum(tmp);
-        end;
+        end
 
-    end;
+    end
 
 end %for tmpIndex = 1:maxXiLength:T
 
