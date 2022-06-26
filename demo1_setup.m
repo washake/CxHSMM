@@ -7,7 +7,9 @@ clear all;
 Q = 10;
 % observed alphabet spaces, 
 % V(k) is domain of kth observed element(feature)
-V = 2 * ones(1,1000);
+num_ = 1;
+for TTT = 1000:1000:10000
+V = 2 * ones(1,TTT);
 
 % number of phases, set to 1 if using HMM
 M = 5;
@@ -49,3 +51,54 @@ for n=1:N
         end
     end
 end
+
+%%Learn
+[PI,A,P,D,B,loglik] = em_cxhsmm(Q,M,K,V,mobsq,5,1e-30,'observe_state');
+
+%%
+%%classify
+obsq = mobsq{1}; % pick one sequence
+
+% must do this first
+[H lnH] = compute_obprob(B,obsq,'scale');
+
+% there are two methods for infering the hidden states
+% below is a simple argmax P(x_t | obs) for each t
+
+[rankedState probs] = smstate_decode(PI,A,P,D,H);
+smoothedLabels=rankedState(1,:);
+
+% 
+% Here is the viterbi decode which returns
+% the most likely sequence, rather than a sequence
+% of most likely states as above
+%
+% argmax P(x_{1:T} | obs)
+%
+% If you're not sure which method to use,
+% then try the viterbi first
+
+[lvtbsq lprob] = viterbi_cxhsmm(PI,A,P,D,H,'uselog');
+viterbiLabels = lvtbsq(1,:);
+fprintf('Look at smoothedLabels and viterbiLabels for results.\n');
+
+
+
+
+
+
+
+
+tmp_(num_) = sum(smoothedLabels == viterbiLabels)/length(viterbiLabels)
+
+
+num_ = num_ + 1;
+end
+
+
+
+xx = 1:length(tmp_);
+plot(xx, tmp_)
+
+
+

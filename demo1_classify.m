@@ -23,3 +23,14 @@ smoothedLabels=rankedState(1,:);
 [lvtbsq lprob] = viterbi_cxhsmm(PI,A,P,D,H,'uselog');
 viterbiLabels = lvtbsq(1,:);
 fprintf('Look at smoothedLabels and viterbiLabels for results.\n');
+
+
+
+
+
+
+
+
+tmp_ = sum(smoothedLabels == viterbiLabels)/length(viterbiLabels)
+
+
