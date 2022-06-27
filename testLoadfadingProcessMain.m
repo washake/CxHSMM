@@ -6,6 +6,12 @@ semilogy(abs(sum(fading_process_coeffs(1:500,:),2)).^2,'-b')
 hold on 
 semilogy(abs(rayleigh_proc_coeffc(1:500)).^2)
 
+%YY = plot(20.*log10(abs(rayleigh_proc_coeffc(1:500))));
+%tt = 1:length(YY);
+%plot(tt,YY)
+xlabel('Time[sec]');
+ylabel('Magnitude');
+
 Y_T=rayleigh_proc_coeffc(1:500);
 Y_T_db=20.*log10(abs(Y_T));        % output when length of input=T  in dB
 % root mean square value of input signals
